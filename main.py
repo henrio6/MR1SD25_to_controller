@@ -4,7 +4,6 @@
 # 55 0d 04 33 0a 0e 04 00 40 06 27 1c 3e
 # 55 0d 04 33 0a 0e 05 00 40 06 01 6c 71
 import serial, pyvjoy, argparse
-from time import sleep
 
 parser = argparse.ArgumentParser(description='Mavic Mini and Mini SE RC <-> VJoy interface.')
 
@@ -56,7 +55,6 @@ def parseInput(input, name):
 try:
     # Put controller into "simulator mode" to get data faster
     s.write(simulatormodeData)
-    sleep(0.1)
 
     while True:
         # Ping device (to get new data).
