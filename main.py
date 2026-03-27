@@ -22,7 +22,7 @@ maxValue = 32768
 # Reverse-engineered. Seems any one of the known working pings are okay.
 pingData = bytearray.fromhex('550d04330a0e0300400601f44a')
 # Puts controller into "simulator mode" which makes it send data faster
-simulatormodeData = bytearray.fromhex('0a0640062401')
+simulatormodeData = bytearray.fromhex('550e04660a06eb3440062401d9ec')
 
 # Open serial.
 try:
