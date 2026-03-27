@@ -4,8 +4,9 @@
 # 55 0d 04 33 0a 0e 04 00 40 06 27 1c 3e
 # 55 0d 04 33 0a 0e 05 00 40 06 01 6c 71
 import serial, pyvjoy, argparse
+from time import sleep
 
-parser = argparse.ArgumentParser(description='Mavic Mini RC <-> VJoy interface.')
+parser = argparse.ArgumentParser(description='Mavic Mini and Mini SE RC <-> VJoy interface.')
 
 parser.add_argument('-p', '--port', help='RC Serial Port', required=True)
 parser.add_argument('-d', '--device', help='VJoy Device ID', type=int, default=1)
@@ -20,6 +21,8 @@ maxValue = 32768
 
 # Reverse-engineered. Seems any one of the known working pings are okay.
 pingData = bytearray.fromhex('550d04330a0e0300400601f44a')
+# Puts controller into "simulator mode" which makes it send data faster
+simulatormodeData = bytearray.fromhex('0a0640062401')
 
 # Open serial.
 try:
@@ -51,6 +54,10 @@ def parseInput(input, name):
     return output
 
 try:
+    # Put controller into "simulator mode" to get data faster
+    s.write(simulatormodeData)
+    sleep(0.1)
+
     while True:
         # Ping device (to get new data).
         s.write(pingData)
@@ -71,7 +78,7 @@ try:
 
             camera = parseInput(data[19:21], 'cam')
 
-            # TODO: Implement buttons (couldn't find while reverse-engineering).
+            # TODO: Implement buttons (already reverse-engineered but has to be implemented).
 
             # Update VJoy input.
             j.data.wAxisX = left_horizontal
